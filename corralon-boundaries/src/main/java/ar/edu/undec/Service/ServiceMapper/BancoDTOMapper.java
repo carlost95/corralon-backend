@@ -13,4 +13,10 @@ public class BancoDTOMapper {
              return null;
          }
     }
+
+    public BancoDTO mapeoCoreDTO(Banco banco) {
+        BancoDTO bancoDTO = new BancoDTO(banco.getId(), banco.getNombre(), banco.getAbreviatura(), banco.getHabilitado());
+
+        return bancoDTO;
+    }
 }
