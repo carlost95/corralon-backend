@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,9 +26,8 @@ public class UpdateBancoUnitTest {
     public void modificarBanco_BancoExiste_GuardaCorrectamente() throws BancoIncompletoException, BancoNoExisteException {
         Banco banco = Banco.factoryBanco(1, "Banco Rioja", "BR", true);
         Banco updated = Banco.factoryBanco(1, "Banco Patagonia", "BP", true);
-
         when(iUpdateBancoRepo.findById(1)).thenReturn(banco);
-        when(iUpdateBancoRepo.update(updated)).thenReturn(updated);
+        when(iUpdateBancoRepo.update(any(Banco.class))).thenReturn(updated);
 
         UpdateBancoUseCase updateBancoUseCase = new UpdateBancoUseCase(iUpdateBancoRepo);
 
