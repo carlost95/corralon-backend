@@ -2,7 +2,7 @@ package model;
 
 import exceptions.BancoIncompletoException;
 
-public class Banco {
+public class Banco extends AuditDate {
 
     private Integer id;
     private String nombre;
@@ -10,6 +10,7 @@ public class Banco {
     private Boolean habilitado;
 
     public Banco(Integer id, String nombre, String abreviatura, Boolean habilitado) {
+        super();
         this.id = id;
         this.nombre = nombre;
         this.abreviatura = abreviatura;

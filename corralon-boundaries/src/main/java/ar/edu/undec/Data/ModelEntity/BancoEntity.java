@@ -1,10 +1,11 @@
 package ar.edu.undec.Data.ModelEntity;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
+
 @Entity(name = "banco")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class BancoEntity {
+public class BancoEntity extends DateAudit{
     private Integer id;
     private String nombre;
     private String abreviatura;

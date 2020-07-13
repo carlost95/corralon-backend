@@ -12,13 +12,18 @@ public class BancoEntityMapper {
         bancoEntity.setNombre(banco.getNombre());
         bancoEntity.setAbreviatura(banco.getAbreviatura());
         bancoEntity.setHabilitado(banco.getHabilitado());
+        bancoEntity.setCreatedAt(banco.getCreatedAt());
+        bancoEntity.setUpdatedAt(banco.getUpdatedAt());
         return bancoEntity;
     }
 
     public Banco mapeoDataCore(BancoEntity bancoEntity) {
         try{
             if ( bancoEntity != null){
-                return Banco.factoryBanco(bancoEntity.getId(), bancoEntity.getNombre(), bancoEntity.getAbreviatura(), bancoEntity.getHabilitado());
+                Banco banco = Banco.factoryBanco(bancoEntity.getId(), bancoEntity.getNombre(), bancoEntity.getAbreviatura(), bancoEntity.getHabilitado());
+                banco.setCreatedAt(bancoEntity.getCreatedAt());
+                banco.setUpdatedAt(bancoEntity.getUpdatedAt());
+                return banco;
             }
             return null;
         } catch (BancoIncompletoException e) {
