@@ -14,14 +14,24 @@ public class UpdateBancoUseCase implements IUpdateBancoInput {
     }
 
     public Banco update(Banco updated) throws BancoNoExisteException {
+        Banco toUpdate = getById(updated);
 
-        if ( noExisteBanco(updated)) {
+        if ( toUpdate == null ) {
             throw new BancoNoExisteException("No se encontro el updated");
         }
-        return this.iUpdateBancoRepo.update(updated);
+        updateData(updated, toUpdate);
+        return this.iUpdateBancoRepo.update(toUpdate);
     }
 
-    private boolean noExisteBanco(Banco toUpdate){
-        return this.iUpdateBancoRepo.findById(toUpdate.getId()) == null;
+    private void updateData(Banco updated, Banco toUpdate) {
+        toUpdate.setId(updated.getId());
+        toUpdate.setNombre(updated.getNombre());
+        toUpdate.setAbreviatura(updated.getAbreviatura());
+        toUpdate.setHabilitado(updated.getHabilitado());
     }
+
+    private Banco getById(Banco updated) {
+        return this.iUpdateBancoRepo.findById(updated.getId());
+    }
+
 }
