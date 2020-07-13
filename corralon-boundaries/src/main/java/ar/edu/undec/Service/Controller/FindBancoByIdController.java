@@ -7,9 +7,7 @@ import exceptions.BancoNoExisteException;
 import input.IFindByIdBancoInput;
 import model.Banco;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
@@ -23,7 +21,8 @@ public class FindBancoByIdController {
         this.iFindByIdBancoInput = iFindByIdBancoInput;
     }
 
-    public Response findBancoById(Integer id){
+    @GetMapping("/{id}")
+    public Response findBancoById(@PathVariable Integer id){
         Response response = new Response();
         try {
             Banco banco = this.iFindByIdBancoInput.findById(id);
