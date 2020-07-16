@@ -3,6 +3,7 @@ package ar.edu.undec.ServiceIntegrationTest;
 import ar.edu.undec.Service.Controller.CrearBancoController;
 import ar.edu.undec.Service.ModelService.BancoDTO;
 import exceptions.BancoExisteException;
+import exceptions.BancoIncompletoException;
 import input.ICrearBancoInput;
 import model.Banco;
 import org.apache.http.HttpStatus;
@@ -24,19 +25,14 @@ public class CrearBancoServiceIT {
     ICrearBancoInput iCrearBancoInput;
 
     @Test
-    public void crearBanco_BancoNoExiste_Devuelve200() throws BancoExisteException {
-        BancoDTO banco = new BancoDTO(null, "Banco Rioja", "BR", true);
-        when(iCrearBancoInput.crearBanco(any(Banco.class))).thenReturn(true);
+    public void crearBanco_BancoNoExiste_Devuelve200() throws BancoExisteException, BancoIncompletoException {
+        BancoDTO bancoDTO = new BancoDTO(null, "Banco Rioja", "BR", true);
+        Banco banco = Banco.factoryBanco(null, "Banco Rioja", "BR", true);
+
+        when(iCrearBancoInput.crearBanco(any(Banco.class))).thenReturn(banco);
         CrearBancoController crearBancoController = new CrearBancoController(iCrearBancoInput);
-        assertEquals(crearBancoController.crearBanco(banco).getStatusCodeValue(), HttpStatus.SC_OK);
 
-    }
+        assertEquals(crearBancoController.crearBanco(bancoDTO).getStatusCodeValue(), 200);
 
-    @Test
-    public void crearBanco_BancoExiste_Devuelve412() throws Exception {
-        BancoDTO bancoDTO =new BancoDTO(null,"Banco Rioja","BR",true);
-        when(iCrearBancoInput.crearBanco(any(Banco.class))).thenThrow(new BancoExisteException("El Banco Existe"));
-        CrearBancoController crearBancoController=new CrearBancoController(iCrearBancoInput);
-        assertEquals(crearBancoController.crearBanco(bancoDTO).getStatusCodeValue(),HttpStatus.SC_PRECONDITION_FAILED);
     }
 }
