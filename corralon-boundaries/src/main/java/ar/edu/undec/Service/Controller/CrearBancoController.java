@@ -1,8 +1,10 @@
 package ar.edu.undec.Service.Controller;
 
 import ar.edu.undec.Service.ModelService.BancoDTO;
+import ar.edu.undec.Service.ModelService.Response;
 import ar.edu.undec.Service.ServiceMapper.BancoDTOMapper;
 import exceptions.BancoExisteException;
+import exceptions.BancoIncompletoException;
 import input.ICrearBancoInput;
 import model.Banco;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +25,14 @@ public class CrearBancoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearBanco(@RequestBody BancoDTO bancoDTO) {
-        try {
-            Banco banco = new BancoDTOMapper().mapeoDTOCore(bancoDTO);
-            boolean resultado= this.iCrearBancoInput.crearBanco(banco);
-            if(resultado)
-                return ResponseEntity.status(HttpStatus.OK).body(true);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (BancoExisteException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(false);
-        }
+    public ResponseEntity<Response> crearBanco(@RequestBody BancoDTO bancoDTO) throws BancoExisteException, BancoIncompletoException {
+        Response response = new Response();
+        Banco banco = new BancoDTOMapper().mapeoDTOCore(bancoDTO);
+        Banco resultado = this.iCrearBancoInput.crearBanco(banco);
+        response.setStatus(200);
+        response.setMessage("Banco creado correctamente");
+        response.setData(resultado);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
