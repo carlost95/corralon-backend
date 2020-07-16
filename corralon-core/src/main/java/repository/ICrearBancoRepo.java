@@ -4,7 +4,7 @@ import model.Banco;
 
 public interface ICrearBancoRepo {
 
-    Boolean save(Banco banco);
+    Banco save(Banco banco);
 
     Banco findByNombre(String nombreBanco);
 
