@@ -1,10 +1,13 @@
 package ar.edu.undec.Data.EntityMapper;
 
 import ar.edu.undec.Data.ModelEntity.BancoEntity;
-import exceptions.BancoIncompletoException;
 import model.Banco;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BancoEntityMapper {
+
+    static final Logger LOG = LoggerFactory.getLogger(BancoEntityMapper.class);
 
     public BancoEntity mapeoCoreData(Banco banco) {
         BancoEntity bancoEntity = new BancoEntity();
@@ -18,17 +21,16 @@ public class BancoEntityMapper {
     }
 
     public Banco mapeoDataCore(BancoEntity bancoEntity) {
-        try{
-            if ( bancoEntity != null){
-                Banco banco = Banco.factoryBanco(bancoEntity.getId(), bancoEntity.getNombre(), bancoEntity.getAbreviatura(), bancoEntity.getHabilitado());
+        Banco banco = null;
+        try {
+            if (bancoEntity != null){
+                banco = Banco.factoryBanco(bancoEntity.getId(), bancoEntity.getNombre(), bancoEntity.getAbreviatura(), bancoEntity.getHabilitado());
                 banco.setCreatedAt(bancoEntity.getCreatedAt());
                 banco.setUpdatedAt(bancoEntity.getUpdatedAt());
-                return banco;
             }
-            return null;
-        } catch (BancoIncompletoException e) {
-            e.printStackTrace();
-            return null;
+        } catch (Exception e) {
+            LOG.error("mapeoDataCore: " + e.getMessage());
         }
+        return banco;
     }
 }
