@@ -13,11 +13,11 @@ public class CrearBancoUseCase implements ICrearBancoInput {
         this.crearBancoRepo = crearBancoRepo;
     }
 
-    public boolean crearBanco(Banco banco) throws BancoExisteException {
-        banco.setHabilitado(true);
+    public Banco crearBanco(Banco banco) throws BancoExisteException {
         if (existeBanco(banco.getNombre())){
-            throw  new BancoExisteException();
+            throw  new BancoExisteException("Core - BancoExisteException: El banco existe");
         }
+        banco.setHabilitado(true);
         return this.crearBancoRepo.save(banco);
     }
 
