@@ -21,20 +21,18 @@ public class CrearBancoUnitTest {
     @Test
     public void crearBanco_BancoNoExiste_GuardaCorrectamente() throws BancoIncompletoException, BancoExisteException {
         Banco banco = Banco.factoryBanco(null, "Banco Rioja", "BR", true);
-        Mockito.when(crearBancoRepo.save(banco)).thenReturn(true);
+        Mockito.when(crearBancoRepo.save(banco)).thenReturn(banco);
         CrearBancoUseCase crearBancoUseCase = new CrearBancoUseCase(crearBancoRepo);
-        boolean resultado = crearBancoUseCase.crearBanco(banco);
-        Assertions.assertTrue(resultado);
+        Assertions.assertNotNull(crearBancoUseCase.crearBanco(banco));
     }
 
 
     @Test
     public void crearBancoHabilitacionNula_HabilitacionNull_GuardaCorrectamente() throws BancoIncompletoException, BancoExisteException {
         Banco banco = Banco.factoryBanco(null, "Banco Rioja", "BR", null);
-        Mockito.when(crearBancoRepo.save(banco)).thenReturn(true);
+        Mockito.when(crearBancoRepo.save(banco)).thenReturn(banco);
         CrearBancoUseCase crearBancoUseCase = new CrearBancoUseCase(crearBancoRepo);
-        boolean resultado = crearBancoUseCase.crearBanco(banco);
-        Assertions.assertTrue(resultado);
+        Assertions.assertNotNull(crearBancoUseCase.crearBanco(banco));
     }
 
     @Test
