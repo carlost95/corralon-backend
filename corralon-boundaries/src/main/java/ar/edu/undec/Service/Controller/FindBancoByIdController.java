@@ -7,6 +7,8 @@ import exceptions.BancoNoExisteException;
 import input.IFindByIdBancoInput;
 import model.Banco;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -22,19 +24,14 @@ public class FindBancoByIdController {
     }
 
     @GetMapping("/{id}")
-    public Response findBancoById(@PathVariable Integer id){
+    public ResponseEntity<Response> findBancoById(@PathVariable Integer id) throws BancoNoExisteException {
         Response response = new Response();
-        try {
-            Banco banco = this.iFindByIdBancoInput.findById(id);
-            BancoDTO bancoDTO = new BancoDTOMapper().mapeoCoreDTO(banco);
-            response.setMessage("Banco encontrado");
-            response.setData(bancoDTO);
-            response.setStatus(200);
+        Banco banco = this.iFindByIdBancoInput.findById(id);
+        BancoDTO bancoDTO = new BancoDTOMapper().mapeoCoreDTO(banco);
+        response.setMessage("Banco encontrado");
+        response.setData(bancoDTO);
+        response.setStatus(200);
 
-        } catch (Exception e) {
-            response.setMessage("Banco no existe");
-            response.setStatus(412);
-        }
-        return response;
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }

@@ -3,7 +3,6 @@ package ar.edu.undec.Data.Implementation;
 import ar.edu.undec.Data.EntityMapper.BancoEntityMapper;
 import ar.edu.undec.Data.ModelEntity.BancoEntity;
 import ar.edu.undec.Data.Repository.UpdateBancoRepo;
-import exceptions.BancoIncompletoException;
 import model.Banco;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +14,7 @@ import repository.IUpdateBancoRepo;
 public class UpdateBancoRepoImplementation implements IUpdateBancoRepo {
 
     static final Logger LOG = LoggerFactory.getLogger(BancoEntityMapper.class);
+
     @Autowired
     private UpdateBancoRepo updateBancoRepo;
 
@@ -38,6 +38,17 @@ public class UpdateBancoRepoImplementation implements IUpdateBancoRepo {
             return new BancoEntityMapper().mapeoDataCore(saved);
         } catch (Exception e) {
             LOG.error("UpdateBancoReporImplementation: Error to update database" + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Banco findBancoByName(String name) {
+        try {
+            BancoEntity banco = updateBancoRepo.findBancoEntitiesByNombreEquals(name);
+            return new BancoEntityMapper().mapeoDataCore(banco);
+        } catch (Exception e) {
+            LOG.error("UpdateBancoReporImplementation: Error to find database" + e.getMessage());
         }
         return null;
     }

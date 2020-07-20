@@ -8,4 +8,5 @@ public interface IUpdateBancoRepo {
 
     Banco update(Banco banco);
 
+    Banco findBancoByName(String nombre);
 }

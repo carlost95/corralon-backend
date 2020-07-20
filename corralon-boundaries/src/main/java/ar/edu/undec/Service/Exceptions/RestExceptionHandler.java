@@ -3,6 +3,7 @@ package ar.edu.undec.Service.Exceptions;
 import ar.edu.undec.Service.ModelService.Response;
 import exceptions.BancoExisteException;
 import exceptions.BancoIncompletoException;
+import exceptions.BancoNoExisteException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
@@ -31,6 +32,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleBancoIncompletoException(BancoIncompletoException ex) {
         Response response = new Response();
         response.setStatus(413);
+        response.setMessage(ex.getStackTrace()[0].getClassName() + " - " + ex.getStackTrace()[0].getMethodName() + " - " + ex.getClass() + " - " + ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(BancoNoExisteException.class)
+    protected ResponseEntity<Object> handleBancoNoExisteException(BancoNoExisteException ex) {
+        Response response = new Response();
+        response.setStatus(414);
         response.setMessage(ex.getStackTrace()[0].getClassName() + " - " + ex.getStackTrace()[0].getMethodName() + " - " + ex.getClass() + " - " + ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

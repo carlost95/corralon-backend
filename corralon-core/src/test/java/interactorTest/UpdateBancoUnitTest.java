@@ -23,16 +23,29 @@ public class UpdateBancoUnitTest {
 
 
     @Test
-    public void modificarBanco_BancoExiste_GuardaCorrectamente() throws BancoIncompletoException, BancoNoExisteException {
+    public void modificarBanco_BancoExiste_GuardaCorrectamente() throws BancoIncompletoException, BancoNoExisteException, BancoExisteException {
         Banco banco = Banco.factoryBanco(1, "Banco Rioja", "BR", true);
         Banco updated = Banco.factoryBanco(1, "Banco Patagonia", "BP", true);
+
         when(iUpdateBancoRepo.findById(1)).thenReturn(banco);
+        when(iUpdateBancoRepo.findBancoByName("Banco Rioja")).thenReturn(null);
         when(iUpdateBancoRepo.update(any(Banco.class))).thenReturn(updated);
 
         UpdateBancoUseCase updateBancoUseCase = new UpdateBancoUseCase(iUpdateBancoRepo);
 
         Banco result = updateBancoUseCase.update(updated);
         Assertions.assertNotNull(result);
+    }
+
+    @Test
+    public void should_ThrowBancoExiste_WhenNameOfBankIsEqualToAnother() throws BancoIncompletoException, BancoNoExisteException {
+        Banco banco = Banco.factoryBanco(1, "Banco Rioja", "BR", true);
+
+        when(iUpdateBancoRepo.findById(1)).thenReturn(banco);
+        when(iUpdateBancoRepo.findBancoByName("Banco Rioja")).thenReturn(banco);
+
+        UpdateBancoUseCase updateBancoUseCase = new UpdateBancoUseCase(iUpdateBancoRepo);
+        Assertions.assertThrows(BancoExisteException.class, ()-> updateBancoUseCase.update(banco));
     }
 
     @Test

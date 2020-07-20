@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -20,24 +20,24 @@ import java.util.Date;
 public abstract class DateAudit implements Serializable {
 
     @CreatedDate
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 

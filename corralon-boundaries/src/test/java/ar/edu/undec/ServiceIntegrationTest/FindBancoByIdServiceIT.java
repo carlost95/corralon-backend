@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -26,19 +28,13 @@ public class FindBancoByIdServiceIT {
     public void findBanco_BancoExiste_Devuelve200() throws BancoNoExisteException {
         BancoDTO banco = new BancoDTO(1, "Banco Rioja", "BR", true);
         Banco finded = new Banco(1, "Banco Rioja", "BR", true);
+        finded.setCreatedAt(LocalDateTime.now());
+        finded.setUpdatedAt(LocalDateTime.now());
 
         when(iFindByIdBancoInput.findById(any(Integer.class))).thenReturn(finded);
         FindBancoByIdController findBancoByIdController = new FindBancoByIdController(iFindByIdBancoInput);
-        assertEquals(findBancoByIdController.findBancoById(banco.getId()).getStatus(), 200 );
+        assertEquals(findBancoByIdController.findBancoById(banco.getId()).getBody().getStatus(), 200 );
 
-    }
-
-    @Test
-    public void findBanco_BancoNoExiste_Devuelve412() throws BancoNoExisteException {
-        Banco finded = new Banco(1, "Banco Rioja", "BR", true);
-        when(iFindByIdBancoInput.findById(any(Integer.class))).thenThrow(new BancoNoExisteException("El Banco no existe"));
-        FindBancoByIdController findBancoByIdController = new FindBancoByIdController(iFindByIdBancoInput);
-        assertEquals(findBancoByIdController.findBancoById(finded.getId()).getStatus(), 412 );
     }
 
 }
